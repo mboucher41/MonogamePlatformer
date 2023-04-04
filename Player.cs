@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PlatformerGame
 {
-    public class GameObject: DrawableGameComponent
+    public class Player : DrawableGameComponent
     {
         Rectangle rectangle;
         Transform transform;
@@ -12,11 +12,20 @@ namespace PlatformerGame
         // Each child should overrode/make a new spritebatch.
         // Objects of the same class can share the spritebatch.
         public static SpriteBatch spriteBatch;
+        enum JumpState
+        {
+            grounded,
+            jumping,
+            falling
+        }
+        JumpState CurrentPlayerJumpState = JumpState.grounded;
+        int jumpTime = 0;
+
         protected void Initialze()
-        {            
+        {
         }
 
-        public GameObject(Game game, Transform transform, Texture2D texture) : base(game)
+        public Player(Game game, Transform transform, Texture2D texture) : base(game)
         {
             if (spriteBatch is null)
             {
@@ -40,7 +49,51 @@ namespace PlatformerGame
         public override void Update(GameTime gameTime)
         {
             // After intializing your transform, use transform.MovePosition() to move.
-            base.Update(gameTime);          
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                transform.MovePosition(new Vector2(3, 0));
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                transform.MovePosition(new Vector2(-3, 0));
+            }
+
+
+
+            switch (CurrentPlayerJumpState)
+            {
+                case JumpState.grounded:
+                    jumpTime = 0;
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                    {
+                        CurrentPlayerJumpState = JumpState.jumping;
+                        jumpTime += 30;
+                    }
+                    break;
+                case JumpState.jumping:
+
+                    transform.MovePosition(new Vector2(0, -8));
+                    jumpTime -= 1;
+                    if (jumpTime == 0)
+                    {
+                        CurrentPlayerJumpState = JumpState.falling;
+                    }
+
+                    break;
+                case JumpState.falling:
+
+                    transform.MovePosition(new Vector2(0, 8));
+
+                    if (transform._position.Y > 680)
+                    {
+                        CurrentPlayerJumpState = JumpState.grounded;
+                    }
+                    break;
+            }
+
+
+            base.Update(gameTime);
         }
 
         // This will be run by the game automatically if "Visible" is true;

@@ -10,7 +10,7 @@ namespace PlatformerGame
         private SpriteBatch _spriteBatch;
 
         Texture2D playerTexture;
-        GameObject player;
+        Player player;
         Transform playerTransform;
 
         public PlatformerGame()
@@ -28,8 +28,8 @@ namespace PlatformerGame
             _graphics.PreferredBackBufferWidth = 1080;
             _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
-            playerTransform = new Transform(new Vector2(100, 100), 0, 1f);
-            player = new GameObject(this, playerTransform, playerTexture);
+            playerTransform = new Transform(new Vector2(540, 680), 0, 1f);
+            player = new Player(this, playerTransform, playerTexture);
         }
 
         protected override void LoadContent()
