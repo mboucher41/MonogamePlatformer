@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace PlatformerGame
 {
@@ -13,17 +14,19 @@ namespace PlatformerGame
         public static SpriteBatch spriteBatch;
 
         protected void Initialze()
-        {
-            if(spriteBatch == null)
-            {
-                spriteBatch = new SpriteBatch(Game.GraphicsDevice);
-            }
+        {            
         }
 
-        public GameObject(Game game) : base(game)
+        public GameObject(Game game, Transform transform, Texture2D texture) : base(game)
         {
+            if (spriteBatch is null)
+            {
+                spriteBatch = spriteBatch = new SpriteBatch(GraphicsDevice);
+            }
             // Add more to the constructor.
             game.Components.Add(this); // This allows the game to call Update and Draw automatically.
+            this.transform = transform;
+            this.texture = texture;
         }
 
         public void Start(Vector2 startPosition)
@@ -38,6 +41,26 @@ namespace PlatformerGame
         public override void Update(GameTime gameTime)
         {
             // After intializing your transform, use transform.MovePosition() to move.
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            {
+                transform.MovePosition(new Vector2(5, 0));
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                transform.MovePosition(new Vector2(-5, 0));
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
+                transform.MovePosition(new Vector2(0, -5));
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
+                transform.MovePosition(new Vector2(0, 5));
+            }
+
             base.Update(gameTime);
         }
 
@@ -45,7 +68,7 @@ namespace PlatformerGame
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            //spriteBatch.Draw(texture, transform._position, texture.Bounds, Color.White, transform._rotation, texture.Bounds.Center.ToVector2(), transform._scale, SpriteEffects.None, 0);
+            spriteBatch.Draw(texture, transform._position, texture.Bounds, Color.White, transform._rotation, texture.Bounds.Center.ToVector2(), transform._scale, SpriteEffects.None, 0);
             spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -9,6 +9,10 @@ namespace PlatformerGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+        Texture2D playerTexture;
+        GameObject player;
+        Transform playerTransform;
+
         public PlatformerGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -24,12 +28,14 @@ namespace PlatformerGame
             _graphics.PreferredBackBufferWidth = 1080;
             _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
+            playerTransform = new Transform(new Vector2(100, 100), 0, 1f);
+            player = new GameObject(this, playerTransform, playerTexture);
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            playerTexture = Content.Load<Texture2D>("PlayerShip");
             // TODO: use this.Content to load your game content here
         }
 
@@ -37,6 +43,7 @@ namespace PlatformerGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            
 
             // TODO: Add your update logic here
 
@@ -46,7 +53,6 @@ namespace PlatformerGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
