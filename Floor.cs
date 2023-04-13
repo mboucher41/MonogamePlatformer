@@ -11,6 +11,7 @@ namespace DMIT1514_Lab06_Platformer
 {
     public class Floor : GameObject
     {
+        //can look at lesson 39 platformer final for example
 
 
         public Floor(Game game, Transform transform, Texture2D texture) : base(game, transform, texture)
