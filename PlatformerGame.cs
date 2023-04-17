@@ -36,7 +36,7 @@ namespace PlatformerGame
             playerTransform = new Transform(new Vector2(540, 680), 0, 1f);
             player = new Player(this, playerTransform, playerTexture);
             platformTransform = new Transform(new Vector2(400, 600), 0, 1f);
-            platform = new Floor(platformTransform._position, new Vector2(platformTexture.Bounds.X, platformTexture.Bounds.Y), "Platform", this, platformTransform, platformTexture);
+            platform = new Floor(this, platformTransform, platformTexture);
         }
 
         protected override void LoadContent()
