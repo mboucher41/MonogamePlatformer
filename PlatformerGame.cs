@@ -11,7 +11,7 @@ namespace PlatformerGame
         private SpriteBatch _spriteBatch;
 
         Texture2D playerTexture;
-        Actor player;
+        Player player;
         Transform playerTransform;
 
         Floor platform;
@@ -34,9 +34,9 @@ namespace PlatformerGame
             _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
             playerTransform = new Transform(new Vector2(540, 680), 0, 1f);
-            player = new Actor(this, playerTransform, playerTexture);
+            player = new Player(this, playerTransform, playerTexture);
             platformTransform = new Transform(new Vector2(400, 600), 0, 1f);
-            platform = new Floor(this, platformTransform, platformTexture);
+            platform = new Floor(platformTransform._position, new Vector2(platformTexture.Bounds.X, platformTexture.Bounds.Y), "Platform", this, platformTransform, platformTexture);
         }
 
         protected override void LoadContent()
