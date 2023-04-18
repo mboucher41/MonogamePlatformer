@@ -8,6 +8,7 @@ namespace PlatformerGame
     {
         public Transform transform;
         Texture2D texture;
+        public Rectangle rectangle;
         // Each child should overrode/make a new spritebatch.
         // Objects of the same class can share the spritebatch.
         public static SpriteBatch spriteBatch;
@@ -49,6 +50,7 @@ namespace PlatformerGame
             game.Components.Add(this); // This allows the game to call Update and Draw automatically.
             this.transform = transform;
             this.texture = texture;
+            this.rectangle = this.texture.Bounds;
         }
 
         public void Start(Vector2 startPosition)
@@ -63,22 +65,20 @@ namespace PlatformerGame
         public override void Update(GameTime gameTime)
         {
             // After intializing your transform, use transform.MovePosition() to move.
-
+            Velocity.Y = 3;
             if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
             {
                 Velocity.X = 3;
-                transform.MovePosition(Velocity);
             }
             else if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 Velocity.X = -3;
-                transform.MovePosition(Velocity);
             }
             else
             {
                 Velocity.X = 0;
-                transform.MovePosition(Velocity);
             }
+
 
             switch (CurrentPlayerJumpState)
             {
@@ -88,12 +88,11 @@ namespace PlatformerGame
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
                         CurrentPlayerJumpState = JumpState.jumping;
-                        jumpTime += 30;
+                        jumpTime += 60;
                     }
                     break;
                 case JumpState.jumping:
                     Velocity.Y = -4;
-                    transform.MovePosition(Velocity);
                     jumpTime -= 1;
                     if (jumpTime == 0)
                     {
@@ -102,8 +101,7 @@ namespace PlatformerGame
 
                     break;
                 case JumpState.falling:
-                    Velocity.Y = 4;
-                    transform.MovePosition(Velocity);
+                    Velocity.Y = 3;
 
                     if (transform._position.Y > Game.Window.ClientBounds.Height - 45)//Hardcoded ground limit
                     {
@@ -111,7 +109,9 @@ namespace PlatformerGame
                     }
                     break;
             }
+            transform.MovePosition(Velocity);
             position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            rectangle.Offset(Velocity);
             base.Update(gameTime);
         }
 
@@ -127,15 +127,22 @@ namespace PlatformerGame
         internal void Land(Rectangle whatILandedOn)
         {
             if (CurrentPlayerJumpState == JumpState.jumping)
-            {
-                position.Y = whatILandedOn.Top - dimensions.Y + 1;
+            {               
                 Velocity.Y = 0;
                 CurrentPlayerJumpState = JumpState.grounded;
+                position.Y = whatILandedOn.Top - dimensions.Y + 1;
             }
         }
         internal void StandOn(Rectangle whatImStandingOn)
         {
-            //velocity.Y -= PlatformerGame.Gravity;
+            //Velocity.Y -= PlatformerGame.Gravity;
+            Velocity.Y = 0;
+            transform.MovePosition(Velocity);
+        }
+
+        public void SetVelocity(int x, int y)
+        {
+            Velocity = new Vector2(x, y);
         }
     }
 }

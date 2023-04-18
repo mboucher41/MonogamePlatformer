@@ -2,48 +2,56 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PlatformerGame;
+using static PlatformerGame.Player;
 
 namespace DMIT1514_Lab06_Platformer
 {
     public class Actor : GameObject
     {
-        Rectangle rectangle;
-        Transform transform;
-        Texture2D texture;
-        public Vector2 Velocity;
-        enum JumpState
+        internal Vector2 Velocity;
+        public enum JumpState
         {
             grounded,
             jumping,
             falling
         }
-        JumpState CurrentPlayerJumpState = JumpState.grounded;
+
+        public JumpState CurrentPlayerJumpState = JumpState.grounded;
         int jumpTime = 0;
 
         public Actor(Game game, Transform transform, Texture2D texture) : base(game, transform, texture)
         {
-            Velocity = new Vector2(0, 1);
-            this.texture = texture;
-            this.transform = transform;
+            Velocity = new Vector2(0, 4);
+            this.transform = base.transform;
+            this.texture = base.texture;
+
             this.rectangle = this.texture.Bounds;
+            //Velocity.Y += 1;
         }
 
         public override void Update(GameTime gameTime)
         {
+            //Velocity.Y += 1;
 
+            //Velocity.Y = 3;
             if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
             {
-                transform.MovePosition(new Vector2(3, 0));
+                Velocity.X = 3;
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                Velocity.X = -3;
+            }
+            else
+            {
+                Velocity.X = 0;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                transform.MovePosition(new Vector2(-3, 0));
-            }
 
             switch (CurrentPlayerJumpState)
             {
                 case JumpState.grounded:
+                    Velocity.Y = 0;
                     jumpTime = 0;
                     if (Keyboard.GetState().IsKeyDown(Keys.Space))
                     {
@@ -52,8 +60,7 @@ namespace DMIT1514_Lab06_Platformer
                     }
                     break;
                 case JumpState.jumping:
-
-                    transform.MovePosition(new Vector2(0, -8));
+                    Velocity.Y = -7;
                     jumpTime -= 1;
                     if (jumpTime == 0)
                     {
@@ -62,26 +69,38 @@ namespace DMIT1514_Lab06_Platformer
 
                     break;
                 case JumpState.falling:
-
-                    transform.MovePosition(new Vector2(0, 8));
+                    Velocity.Y += 0.4f;
 
                     if (transform._position.Y > Game.Window.ClientBounds.Height - 45)//Hardcoded ground limit
                     {
+                        transform._position.Y = Game.Window.ClientBounds.Height - 80;
                         CurrentPlayerJumpState = JumpState.grounded;
                     }
                     break;
             }
+
+            
+            //transform._position += Velocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            rectangle.Offset(Velocity);
+            transform.MovePosition(Velocity);
             base.Update(gameTime);
+
+// rectangle.Offset(Velocity);
+//            transform.MovePosition(Velocity);
+        }
+        internal void Land(Rectangle landingRect)
+        {
+            transform.SetPosition(new Vector2(transform._position.X, landingRect.Top - rectangle.Height + 1));
+            Velocity.Y = 0;
+        }
+        internal void StandOn(Rectangle standRect)
+        {
+            Velocity.Y -= 1;
         }
 
-        public override void Draw(GameTime gameTime)
+        public void SetVelocity(int x, int y)
         {
-            //base.Draw(gameTime);
-
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            spriteBatch.Draw(texture, transform._position, texture.Bounds, Color.White, transform._rotation, texture.Bounds.Center.ToVector2(), transform._scale, SpriteEffects.None, 0);
-            spriteBatch.End();
-            base.Draw(gameTime);
+            Velocity = new Vector2(x, y);
         }
     }
 }

@@ -2,19 +2,23 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace PlatformerGame
 {
     public class PlatformerGame : Game
-    {
+    {      
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         Texture2D playerTexture;
-        Player player;
+        Actor player;
         Transform playerTransform;
 
-        Floor platform;
+        Collider platform;
+
+        List<Collider> colliderList = new List<Collider>();
+
         Texture2D platformTexture;
         Transform platformTransform;
 
@@ -33,10 +37,11 @@ namespace PlatformerGame
             _graphics.PreferredBackBufferWidth = 1080;
             _graphics.PreferredBackBufferHeight = 720;
             _graphics.ApplyChanges();
-            playerTransform = new Transform(new Vector2(540, 680), 0, 1f);
-            player = new Player(this, playerTransform, playerTexture);
+            playerTransform = new Transform(new Vector2(400, 500), 0, 1f);
+            player = new Actor(this, playerTransform, playerTexture);
             platformTransform = new Transform(new Vector2(400, 600), 0, 1f);
-            platform = new Floor(this, platformTransform, platformTexture);
+            platform = new Collider(this, platformTransform, platformTexture);
+            colliderList.Add(platform);
         }
 
         protected override void LoadContent()
@@ -51,7 +56,11 @@ namespace PlatformerGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
+
+            foreach (Collider c in colliderList)
+            {
+                c.ProcessCollisions(player);
+            }
 
             // TODO: Add your update logic here
 

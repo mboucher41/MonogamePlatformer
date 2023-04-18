@@ -6,9 +6,9 @@ namespace PlatformerGame
 {
     public class GameObject: DrawableGameComponent
     {
-        Rectangle rectangle;
-        Transform transform;
-        Texture2D texture;
+        public Rectangle rectangle;
+        public Transform transform;
+        public Texture2D texture;
         // Each child should overrode/make a new spritebatch.
         // Objects of the same class can share the spritebatch.
         public static SpriteBatch spriteBatch;
