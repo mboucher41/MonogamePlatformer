@@ -24,39 +24,45 @@ namespace DMIT1514_Lab06_Platformer
             this.texture = base.texture;
             this.rectangle = this.texture.Bounds;
             this.rectangle.Location = this.transform._position.ToPoint();
+            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));
             type = ColliderType.Top;
         }
 
-        internal bool ProcessCollisions(Actor player)
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+        }
+
+        internal bool ProcessCollisions(Actor actor)
         {
             bool didCollide = false;
-            if (rectangle.Intersects(player.rectangle))
+            if (rectangle.Intersects(actor.rectangle))
             {
                 didCollide = true;
                 switch (type)
                 {
                     case ColliderType.Left:
                         //if the player is moving rightwards
-                        if (player.Velocity.X > 0)
+                        if (actor.Velocity.X > 0)
                         {
-                            player.Velocity.X = 0;
-                            player.transform.MovePosition(player.Velocity);
+                            actor.Velocity.X = 0;
+                            actor.transform.MovePosition(actor.Velocity);
                             //player.MoveHorizontally(0);
                         }
                         break;
                     case ColliderType.Right:
                         //if the player is moving leftwards
-                        if (player.Velocity.X < 0)
+                        if (actor.Velocity.X < 0)
                         {
-                            player.Velocity.X = 0;
-                            player.transform.MovePosition(player.Velocity);
+                            actor.Velocity.X = 0;
+                            actor.transform.MovePosition(actor.Velocity);
                             //player.MoveHorizontally(0);
                         }
                         break;
                     case ColliderType.Top:
                         //player.CurrentPlayerJumpState = Player.JumpState.grounded;
-                        player.Land(rectangle);
-                        player.StandOn(rectangle);
+                        actor.Land(rectangle);
+                        actor.StandOn(rectangle);
                         break;
                     case ColliderType.Bottom:
                         break;

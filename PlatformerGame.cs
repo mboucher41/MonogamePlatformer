@@ -10,16 +10,16 @@ namespace PlatformerGame
     {      
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private const int GameScale = 4;
 
         Texture2D playerTexture;
-        Actor player;
-        Transform playerTransform;
-
+        Texture2D platformTexture;
+        Actor player;       
         Collider platform;
 
         List<Collider> colliderList = new List<Collider>();
 
-        Texture2D platformTexture;
+        Transform playerTransform;
         Transform platformTransform;
 
         public PlatformerGame()
@@ -34,13 +34,14 @@ namespace PlatformerGame
             // TODO: Add your initialization logic here
             base.Initialize();
             Window.Title = "Platformer Game";
-            _graphics.PreferredBackBufferWidth = 1080;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = 360 * GameScale;
+            _graphics.PreferredBackBufferHeight = 240 * GameScale;
             _graphics.ApplyChanges();
-            playerTransform = new Transform(new Vector2(400, 500), 0, 1f);
+            playerTransform = new Transform(new Vector2(20 * GameScale, 20 * GameScale), 0, 1f);            
+            platformTransform = new Transform(new Vector2(20 * GameScale, 200 * GameScale), 0, 1f);
             player = new Actor(this, playerTransform, playerTexture);
-            platformTransform = new Transform(new Vector2(400, 600), 0, 1f);
             platform = new Collider(this, platformTransform, platformTexture);
+
             colliderList.Add(platform);
         }
 
@@ -56,13 +57,13 @@ namespace PlatformerGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
+            // TODO: Add your update logic here
             foreach (Collider c in colliderList)
             {
                 c.ProcessCollisions(player);
-            }
+            }        
 
-            // TODO: Add your update logic here
+            //put inputs here?
 
             base.Update(gameTime);
         }

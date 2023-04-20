@@ -44,5 +44,11 @@ namespace PlatformerGame
         {
             return new Point((int)_position.X, (int)_position.Y);
         }
+
+        public void SyncRect(Rectangle source)
+        {
+            _position.X = source.X;
+            _position.Y = source.Y;
+        }
     }
 }
