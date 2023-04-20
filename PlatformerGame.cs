@@ -73,10 +73,10 @@ namespace PlatformerGame
 
             foreach (GamePlatform p in platformList)
             {
-                //p.topCollider.ProcessCollisions(player);
-                //p.bottomCollider.ProcessCollisions(player);
+                p.topCollider.ProcessCollisions(player);
+                p.bottomCollider.ProcessCollisions(player);
                 p.leftCollider.ProcessCollisions(player);
-                //p.rightCollider.ProcessCollisions(player);
+                p.rightCollider.ProcessCollisions(player);
             }
 
             base.Update(gameTime);

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace DMIT1514_Lab06_Platformer
 {
@@ -26,7 +27,23 @@ namespace DMIT1514_Lab06_Platformer
             this.rectangle = this.texture.Bounds;
             type = providedType;
             this.rectangle.Location = this.transform._position.ToPoint();
-            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));      
+            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));
+            //set dimensions?
+            switch (type)
+            {
+                case ColliderType.Top:
+                    this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, 1 * (int)transform._scale));
+                    break;
+                case ColliderType.Bottom:
+                    this.rectangle = new Rectangle(rectangle.Location + new Point(0, 50), new Point(rectangle.Width * (int)transform._scale, 1 * (int)transform._scale));//POSITION IS NOT UPDATING
+                    break;
+                case ColliderType.Left:
+                    this.rectangle = new Rectangle(rectangle.Location, new Point(1 * (int)transform._scale, rectangle.Height * (int)transform._scale));
+                    break;
+                case ColliderType.Right:
+                    //this.rectangle = new Rectangle(rectangle.Location + new Point(150, 0), new Point(1 * (int)transform._scale, rectangle.Height * (int)transform._scale));
+                    break;
+            }                   
         }
 
         public override void Update(GameTime gameTime)
@@ -45,10 +62,13 @@ namespace DMIT1514_Lab06_Platformer
                     case ColliderType.Left:
                         //if the player is moving rightwards                        
                         actor.sideColliding = true;
+                        //actor.Velocity.Y = 8;
+                        actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Right:
                         //if the player is moving leftwards
                         actor.sideColliding = true;
+                        //actor.Velocity.Y = 8;
                         actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Top:
@@ -58,8 +78,11 @@ namespace DMIT1514_Lab06_Platformer
                         break;
                     case ColliderType.Bottom:
                         //if the player hits the bottom
-                        actor.Velocity.Y = 8;
-                        actor.transform.MovePosition(actor.Velocity);
+                        //if (actor.Velocity.Y < 0)
+                        //{
+                            actor.Velocity.Y = 8;
+                            actor.transform.MovePosition(actor.Velocity);
+                        //}                        
                         //actor.CurrentPlayerJumpState = Actor.JumpState.falling;
                         //actor.transform.MovePosition(actor.Velocity);                    
                         break;

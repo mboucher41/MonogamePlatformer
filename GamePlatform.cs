@@ -11,10 +11,10 @@ namespace DMIT1514_Lab06_Platformer
 {
     public class GamePlatform : GameObject
     {
-        //public Collider topCollider;
-        //public Collider bottomCollider;
+        public Collider topCollider;
+        public Collider bottomCollider;
         public Collider leftCollider;
-        //public Collider rightCollider;
+        public Collider rightCollider;
 
         public GamePlatform(Game game, Transform transform, Texture2D texture) : base(game, transform, texture)
         {
@@ -22,10 +22,10 @@ namespace DMIT1514_Lab06_Platformer
             this.texture = texture;
             this.rectangle = this.texture.Bounds;
 
-            //topCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Top);
-            //bottomCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Bottom);
+            topCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Top);
+            bottomCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Bottom);
             leftCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Left);
-            //rightCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Right);
+            rightCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Right);
         }
 
         public override void Update(GameTime gameTime)
