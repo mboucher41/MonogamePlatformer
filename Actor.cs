@@ -33,7 +33,7 @@ namespace DMIT1514_Lab06_Platformer
 
         public override void Update(GameTime gameTime)
         {
-            Velocity.Y += 0.5f;
+            Velocity.Y += 0.4f;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
             {

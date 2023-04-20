@@ -14,13 +14,16 @@ namespace PlatformerGame
 
         Texture2D playerTexture;
         Texture2D platformTexture;
+        Texture2D groundTexture;
         Actor player;       
         Collider platform;
+        Collider ground;
 
         List<Collider> colliderList = new List<Collider>();
 
         Transform playerTransform;
         Transform platformTransform;
+        Transform groundTransform;
 
         public PlatformerGame()
         {
@@ -39,10 +42,13 @@ namespace PlatformerGame
             _graphics.ApplyChanges();
             playerTransform = new Transform(new Vector2(20 * GameScale, 20 * GameScale), 0, 1f);            
             platformTransform = new Transform(new Vector2(20 * GameScale, 200 * GameScale), 0, 1f);
+            groundTransform = new Transform(new Vector2(100 * GameScale, 210 * GameScale), 0, 1f);
             player = new Actor(this, playerTransform, playerTexture);
             platform = new Collider(this, platformTransform, platformTexture);
+            ground = new Collider(this, groundTransform, groundTexture);
 
             colliderList.Add(platform);
+            colliderList.Add(ground);
         }
 
         protected override void LoadContent()
@@ -50,6 +56,7 @@ namespace PlatformerGame
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             playerTexture = Content.Load<Texture2D>("PlayerShip");
             platformTexture = Content.Load<Texture2D>("Platform");
+            groundTexture = Content.Load<Texture2D>("Ground");
             // TODO: use this.Content to load your game content here
         }
 
