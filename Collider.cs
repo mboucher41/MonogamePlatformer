@@ -65,6 +65,8 @@ namespace DMIT1514_Lab06_Platformer
                         actor.StandOn(rectangle);
                         break;
                     case ColliderType.Bottom:
+                        actor.Velocity.Y = 0;
+                        actor.transform.MovePosition(actor.Velocity);
                         break;
                 }
             }

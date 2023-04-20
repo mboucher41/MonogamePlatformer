@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PlatformerGame;
-using static PlatformerGame.Player;
 
 namespace DMIT1514_Lab06_Platformer
 {
@@ -52,7 +51,7 @@ namespace DMIT1514_Lab06_Platformer
             {
                 landed = false;
                 CurrentPlayerJumpState = JumpState.jumping;
-                jumpTime += 10;
+                jumpTime += 7;
             }
 
             switch (CurrentPlayerJumpState)

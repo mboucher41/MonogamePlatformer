@@ -39,7 +39,6 @@ namespace PlatformerGame
             _scale = newScale;
         }
 
-
         public Point ToPoint()
         {
             return new Point((int)_position.X, (int)_position.Y);

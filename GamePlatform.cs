@@ -9,7 +9,7 @@ using PlatformerGame;
 
 namespace DMIT1514_Lab06_Platformer
 {
-    public class GamePlatform : GameObject
+    public class GamePlatform : Collider
     {
         public enum ColliderType
         {

@@ -40,9 +40,9 @@ namespace PlatformerGame
             _graphics.PreferredBackBufferWidth = 360 * GameScale;
             _graphics.PreferredBackBufferHeight = 240 * GameScale;
             _graphics.ApplyChanges();
-            playerTransform = new Transform(new Vector2(20 * GameScale, 20 * GameScale), 0, 1f);            
-            platformTransform = new Transform(new Vector2(20 * GameScale, 200 * GameScale), 0, 1f);
-            groundTransform = new Transform(new Vector2(100 * GameScale, 210 * GameScale), 0, 1f);
+            playerTransform = new Transform(new Vector2(360 * GameScale, 150 * GameScale), 0, 1f);//DOES NOT SEEM TO CHANGE     
+            platformTransform = new Transform(new Vector2(150 * GameScale, 180 * GameScale), 0, 1f);
+            groundTransform = new Transform(new Vector2(0, 240 * GameScale), 0, 1f);//COLLISION DOES NOT WORK PROPERLY
             player = new Actor(this, playerTransform, playerTexture);
             platform = new Collider(this, platformTransform, platformTexture);
             ground = new Collider(this, groundTransform, groundTexture);
@@ -69,8 +69,6 @@ namespace PlatformerGame
             {
                 c.ProcessCollisions(player);
             }        
-
-            //put inputs here?
 
             base.Update(gameTime);
         }
