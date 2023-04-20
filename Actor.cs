@@ -9,6 +9,7 @@ namespace DMIT1514_Lab06_Platformer
     {
         internal Vector2 Velocity;
         bool landed;
+        public bool sideColliding;
         public enum JumpState
         {
             grounded,
@@ -32,15 +33,22 @@ namespace DMIT1514_Lab06_Platformer
 
         public override void Update(GameTime gameTime)
         {
-            Velocity.Y += 0.4f;
+            //Velocity.Y += 0.4f;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
+            if (sideColliding == false)
             {
-                Velocity.X = 6;
-            }
-            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                Velocity.X = -6;
+                if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
+                {
+                    Velocity.X = 6;
+                }
+                else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                {
+                    Velocity.X = -6;
+                }
+                else
+                {
+                    Velocity.X = 0;
+                }
             }
             else
             {
@@ -71,6 +79,7 @@ namespace DMIT1514_Lab06_Platformer
 
                     break;
                 case JumpState.falling:
+                    Velocity.Y += 0.4f;
                     if (transform._position.Y > Game.Window.ClientBounds.Height - 60)//Hardcoded ground limit
                     {
                         transform._position.Y = Game.Window.ClientBounds.Height - 60;

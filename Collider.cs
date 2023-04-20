@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace DMIT1514_Lab06_Platformer
 {
@@ -16,16 +17,16 @@ namespace DMIT1514_Lab06_Platformer
         {
             Left, Right, Top, Bottom
         }
-        protected ColliderType type;
+        public ColliderType type;
 
-        public Collider(Game game, Transform transform, Texture2D texture) : base(game, transform, texture)
+        public Collider(Game game, Transform transform, Texture2D texture, ColliderType providedType) : base(game, transform, texture)
         {
             this.transform = base.transform;
             this.texture = base.texture;
             this.rectangle = this.texture.Bounds;
+            type = providedType;
             this.rectangle.Location = this.transform._position.ToPoint();
-            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));
-            type = ColliderType.Top;
+            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));      
         }
 
         public override void Update(GameTime gameTime)
@@ -42,33 +43,31 @@ namespace DMIT1514_Lab06_Platformer
                 switch (type)
                 {
                     case ColliderType.Left:
-                        //if the player is moving rightwards
-                        if (actor.Velocity.X > 0)
-                        {
-                            actor.Velocity.X = 0;
-                            actor.transform.MovePosition(actor.Velocity);
-                            //player.MoveHorizontally(0);
-                        }
+                        //if the player is moving rightwards                        
+                        actor.sideColliding = true;
                         break;
                     case ColliderType.Right:
                         //if the player is moving leftwards
-                        if (actor.Velocity.X < 0)
-                        {
-                            actor.Velocity.X = 0;
-                            actor.transform.MovePosition(actor.Velocity);
-                            //player.MoveHorizontally(0);
-                        }
+                        actor.sideColliding = true;
+                        actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Top:
-                        //player.CurrentPlayerJumpState = Player.JumpState.grounded;
+                        //if the player is landing on top
                         actor.Land(rectangle);
                         actor.StandOn(rectangle);
                         break;
                     case ColliderType.Bottom:
-                        actor.Velocity.Y = 0;
+                        //if the player hits the bottom
+                        actor.Velocity.Y = 8;
                         actor.transform.MovePosition(actor.Velocity);
+                        //actor.CurrentPlayerJumpState = Actor.JumpState.falling;
+                        //actor.transform.MovePosition(actor.Velocity);                    
                         break;
                 }
+            }
+            else
+            {
+                actor.sideColliding = false;
             }
             return didCollide;
         }

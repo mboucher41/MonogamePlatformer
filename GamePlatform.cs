@@ -9,49 +9,28 @@ using PlatformerGame;
 
 namespace DMIT1514_Lab06_Platformer
 {
-    public class GamePlatform : Collider
+    public class GamePlatform : GameObject
     {
-        public enum ColliderType
-        {
-            Left, Right, Top, Bottom
-        }
-        ColliderType type;
+        //public Collider topCollider;
+        //public Collider bottomCollider;
+        public Collider leftCollider;
+        //public Collider rightCollider;
 
         public GamePlatform(Game game, Transform transform, Texture2D texture) : base(game, transform, texture)
         {
             this.transform = transform;
             this.texture = texture;
             this.rectangle = this.texture.Bounds;
-            type = ColliderType.Top;
+
+            //topCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Top);
+            //bottomCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Bottom);
+            leftCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Left);
+            //rightCollider = new Collider(game, this.transform, this.texture, Collider.ColliderType.Right);
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-        }
-
-        internal bool ProcessCollisions(Actor player)
-        {
-            bool didCollide = false;
-
-            if (rectangle.Intersects(player.rectangle))
-            {
-                didCollide = true;
-                switch (type)
-                {
-                    case ColliderType.Left:
-                        break;
-                    case ColliderType.Right:
-                        break;
-                    case ColliderType.Top:
-                        player.Land(rectangle);
-                        player.StandOn(rectangle);
-                        break;
-                    case ColliderType.Bottom:
-                        break;
-                }
-            }
-            return didCollide;
         }
     }
 }

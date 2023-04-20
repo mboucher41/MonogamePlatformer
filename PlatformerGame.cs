@@ -16,10 +16,11 @@ namespace PlatformerGame
         Texture2D platformTexture;
         Texture2D groundTexture;
         Actor player;       
-        Collider platform;
+        GamePlatform platform;
         Collider ground;
 
         List<Collider> colliderList = new List<Collider>();
+        List<GamePlatform> platformList = new List<GamePlatform>();
 
         Transform playerTransform;
         Transform platformTransform;
@@ -44,10 +45,10 @@ namespace PlatformerGame
             platformTransform = new Transform(new Vector2(150 * GameScale, 180 * GameScale), 0, 1f);
             groundTransform = new Transform(new Vector2(0, 240 * GameScale), 0, 1f);//COLLISION DOES NOT WORK PROPERLY
             player = new Actor(this, playerTransform, playerTexture);
-            platform = new Collider(this, platformTransform, platformTexture);
-            ground = new Collider(this, groundTransform, groundTexture);
+            platform = new GamePlatform(this, platformTransform, platformTexture);
+            ground = new Collider(this, groundTransform, groundTexture, Collider.ColliderType.Top);
 
-            colliderList.Add(platform);
+            platformList.Add(platform);
             colliderList.Add(ground);
         }
 
@@ -65,10 +66,18 @@ namespace PlatformerGame
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            foreach (Collider c in colliderList)
+            //foreach (Collider c in colliderList)
+            //{
+            //    c.ProcessCollisions(player);
+            //}        
+
+            foreach (GamePlatform p in platformList)
             {
-                c.ProcessCollisions(player);
-            }        
+                //p.topCollider.ProcessCollisions(player);
+                //p.bottomCollider.ProcessCollisions(player);
+                p.leftCollider.ProcessCollisions(player);
+                //p.rightCollider.ProcessCollisions(player);
+            }
 
             base.Update(gameTime);
         }
