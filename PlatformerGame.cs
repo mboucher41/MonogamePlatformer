@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 
 namespace PlatformerGame
@@ -45,8 +46,8 @@ namespace PlatformerGame
             platformTransform = new Transform(new Vector2(150 * GameScale, 180 * GameScale), 0, 1f);
             groundTransform = new Transform(new Vector2(0, 240 * GameScale), 0, 1f);//COLLISION DOES NOT WORK PROPERLY
             player = new Actor(this, playerTransform, playerTexture);
-            platform = new GamePlatform(this, platformTransform, platformTexture);
-            ground = new Collider(this, groundTransform, groundTexture, Collider.ColliderType.Top);
+            platform = new GamePlatform(new Vector2(platformTransform._position.X, platformTransform._position.Y), new Vector2(100,50), "Platform");
+            ground = new Collider(new Vector2(groundTransform._position.X, groundTransform._position.Y), new Vector2(3000, 100), Collider.ColliderType.Top);
 
             platformList.Add(platform);
             colliderList.Add(ground);
@@ -86,7 +87,12 @@ namespace PlatformerGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            //foreach (GamePlatform platform in platformList)
+            //{
+            //    platform.Draw(_spriteBatch);
+            //}
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

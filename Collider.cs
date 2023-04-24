@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
-using System.Numerics;
+using static DMIT1514_Lab06_Platformer.Collider;
 
 namespace DMIT1514_Lab06_Platformer
 {
-    public class Collider: GameObject
+    public class Collider
     {
         public enum ColliderType
         {
@@ -20,41 +20,43 @@ namespace DMIT1514_Lab06_Platformer
         }
         public ColliderType type;
 
-        public Collider(Game game, Transform transform, Texture2D texture, ColliderType providedType) : base(game, transform, texture)
+        protected Texture2D texture;
+        protected Vector2 position;
+        protected Vector2 dimensions;
+        internal Rectangle BoundingBox
         {
-            this.transform = base.transform;
-            this.texture = base.texture;
-            this.rectangle = this.texture.Bounds;
-            type = providedType;
-            this.rectangle.Location = this.transform._position.ToPoint();
-            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));
-            //set dimensions?
-            switch (type)
+            get
             {
-                case ColliderType.Top:
-                    this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, 1 * (int)transform._scale));
-                    break;
-                case ColliderType.Bottom:
-                    this.rectangle = new Rectangle(rectangle.Location + new Point(0, 50), new Point(rectangle.Width * (int)transform._scale, 1 * (int)transform._scale));//POSITION IS NOT UPDATING
-                    break;
-                case ColliderType.Left:
-                    this.rectangle = new Rectangle(rectangle.Location, new Point(1 * (int)transform._scale, rectangle.Height * (int)transform._scale));
-                    break;
-                case ColliderType.Right:
-                    //this.rectangle = new Rectangle(rectangle.Location + new Point(150, 0), new Point(1 * (int)transform._scale, rectangle.Height * (int)transform._scale));
-                    break;
-            }                   
+                return new Rectangle((int)position.X, (int)position.Y, (int)dimensions.X, (int)dimensions.Y);
+            }
         }
 
-        public override void Update(GameTime gameTime)
+        internal void LoadContent(ContentManager Content)
         {
-            base.Update(gameTime);
+            texture = Content.Load<Texture2D>("Platform");
         }
+        public Collider(Vector2 position, Vector2 dimensions, ColliderType colliderType)
+        {
+            this.position = position;
+            this.dimensions = dimensions;
+            this.type = colliderType;              
+        }
+
+
+        //internal void Draw(SpriteBatch spriteBatch)
+        //{
+        //    spriteBatch.Draw(texture, BoundingBox, new Rectangle(0, 0, 1, 1), Color.White);
+        //}
+
+        //public override void Update(GameTime gameTime)
+        //{
+        //    base.Update(gameTime);
+        //}
 
         internal bool ProcessCollisions(Actor actor)
         {
             bool didCollide = false;
-            if (rectangle.Intersects(actor.rectangle))
+            if (BoundingBox.Intersects(actor.rectangle))
             {
                 didCollide = true;
                 switch (type)
@@ -62,19 +64,21 @@ namespace DMIT1514_Lab06_Platformer
                     case ColliderType.Left:
                         //if the player is moving rightwards                        
                         actor.sideColliding = true;
-                        //actor.Velocity.Y = 8;
+                        actor.Velocity.Y = 8;
+                        //actor.Velocity.X = 0;
                         actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Right:
                         //if the player is moving leftwards
                         actor.sideColliding = true;
-                        //actor.Velocity.Y = 8;
+                        actor.Velocity.Y = 8;
+                        //actor.Velocity.X = 0;
                         actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Top:
                         //if the player is landing on top
-                        actor.Land(rectangle);
-                        actor.StandOn(rectangle);
+                        actor.Land(BoundingBox);
+                        actor.StandOn(BoundingBox);
                         break;
                     case ColliderType.Bottom:
                         //if the player hits the bottom
