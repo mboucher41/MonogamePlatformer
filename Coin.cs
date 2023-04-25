@@ -54,7 +54,7 @@ namespace DMIT1514_Lab06_Platformer
             if (active == true)
             {
                 spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                spriteBatch.Draw(texture, transform._position, texture.Bounds, Color.White, transform._rotation, texture.Bounds.Center.ToVector2(), transform._scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(texture, transform._position, texture.Bounds, Color.Black, transform._rotation, texture.Bounds.Center.ToVector2(), transform._scale, SpriteEffects.None, 0);
                 spriteBatch.End();
                 base.Draw(gameTime);
             }

@@ -17,6 +17,7 @@ namespace DMIT1514_Lab06_Platformer
         public Collider bottomCollider;
         public Collider leftCollider;
         public Collider rightCollider;
+        public Texture2D texture;
 
         protected Vector2 position;
         protected Vector2 dimensions;
@@ -24,12 +25,12 @@ namespace DMIT1514_Lab06_Platformer
         public GamePlatform(Vector2 position, Vector2 dimensions, Texture2D texture)
         {
             topCollider = new Collider(                                        
-                                        new Vector2(position.X, position.Y-1),
+                                        new Vector2(position.X + 3, position.Y),
                                         new Vector2(dimensions.X - 6, 1),
                                         Collider.ColliderType.Top,
                                         texture);
             rightCollider = new Collider(
-                                        new Vector2(position.X + dimensions.X - 1, position.Y + 2),
+                                        new Vector2(position.X + dimensions.X - 1, position.Y + 1),
                                         new Vector2(1, dimensions.Y - 2),
                                         Collider.ColliderType.Right,
                                         texture);
@@ -39,10 +40,13 @@ namespace DMIT1514_Lab06_Platformer
                                         Collider.ColliderType.Bottom,
                                         texture);
             leftCollider = new Collider(
-                                        new Vector2(position.X, position.Y + 2),
+                                        new Vector2(position.X, position.Y + 1),
                                         new Vector2(1, dimensions.Y - 2),
                                         Collider.ColliderType.Left,
                                         texture);
+            this.texture = texture;
+            this.position = position;
+            this.dimensions = dimensions;
         }
 
         internal void ProcessCollisions(Actor actor)
@@ -55,15 +59,11 @@ namespace DMIT1514_Lab06_Platformer
 
         internal void Draw(SpriteBatch spritebatch)
         {
+            spritebatch.Draw(texture, position, Color.White);
             topCollider.Draw(spritebatch);
             rightCollider.Draw(spritebatch);
             bottomCollider.Draw(spritebatch);
-            leftCollider.Draw(spritebatch);
+            leftCollider.Draw(spritebatch);         
         }
-
-        //internal void Draw(SpriteBatch spriteBatch)
-        //{
-        //    spriteBatch.Draw(texture, position, Color.White);
-        //}
     }
 }
