@@ -16,16 +16,21 @@ namespace PlatformerGame
         Texture2D playerTexture;
         Texture2D platformTexture;
         Texture2D groundTexture;
+        Texture2D coinTexture;
         Actor player;       
         GamePlatform platform;
         Collider ground;
 
+        Coin coin1, coin2, coin3;
+
+        List<Coin> coinList = new List<Coin>();
         List<Collider> colliderList = new List<Collider>();
         List<GamePlatform> platformList = new List<GamePlatform>();
 
         Transform playerTransform;
         Transform platformTransform;
         Transform groundTransform;
+        Transform coinTransform1, coinTransform2, coinTransform3;
 
         public PlatformerGame()
         {
@@ -45,10 +50,15 @@ namespace PlatformerGame
             playerTransform = new Transform(new Vector2(360 * GameScale, 150 * GameScale), 0, 1f);//DOES NOT SEEM TO CHANGE     
             platformTransform = new Transform(new Vector2(150 * GameScale, 180 * GameScale), 0, 1f);
             groundTransform = new Transform(new Vector2(0, 240 * GameScale), 0, 1f);//COLLISION DOES NOT WORK PROPERLY
-            player = new Actor(this, playerTransform, playerTexture);
-            platform = new GamePlatform(new Vector2(platformTransform._position.X, platformTransform._position.Y), new Vector2(100,50), "Platform");
-            ground = new Collider(new Vector2(groundTransform._position.X, groundTransform._position.Y), new Vector2(3000, 100), Collider.ColliderType.Top);
 
+            coinTransform1 = new Transform(new Vector2(100 * GameScale, 100 * GameScale), 0, 1f);
+
+            player = new Actor(this, playerTransform, playerTexture);
+            platform = new GamePlatform(new Vector2(platformTransform._position.X, platformTransform._position.Y), new Vector2(100,50), platformTexture);
+            ground = new Collider(new Vector2(groundTransform._position.X, groundTransform._position.Y - 100), new Vector2(3000, 100), Collider.ColliderType.Top, platformTexture);
+            coin1 = new Coin(this, coinTransform1, coinTexture);
+
+            coinList.Add(coin1);
             platformList.Add(platform);
             colliderList.Add(ground);
         }
@@ -59,6 +69,7 @@ namespace PlatformerGame
             playerTexture = Content.Load<Texture2D>("PlayerShip");
             platformTexture = Content.Load<Texture2D>("Platform");
             groundTexture = Content.Load<Texture2D>("Ground");
+            coinTexture = Content.Load<Texture2D>("Coin");
             // TODO: use this.Content to load your game content here
         }
 
@@ -80,6 +91,15 @@ namespace PlatformerGame
                 p.rightCollider.ProcessCollisions(player);
             }
 
+            foreach (Coin c in coinList)
+            {
+                c.ProcessCollisions(player);
+            }
+
+            if (Coin.gameWon == true)
+            {
+                //WIN
+            }
             base.Update(gameTime);
         }
 
@@ -88,10 +108,20 @@ namespace PlatformerGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
             // TODO: Add your drawing code here
             _spriteBatch.Begin();
-            //foreach (GamePlatform platform in platformList)
-            //{
-            //    platform.Draw(_spriteBatch);
-            //}
+            foreach (GamePlatform platform in platformList)
+            {
+                platform.Draw(_spriteBatch);
+            }
+
+            foreach (Coin c in coinList)
+            {
+                c.Draw(gameTime);
+            }
+
+            if (Coin.gameWon == true)
+            {
+                //WIN
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
         }

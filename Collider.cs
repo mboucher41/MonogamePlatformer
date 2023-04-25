@@ -31,22 +31,18 @@ namespace DMIT1514_Lab06_Platformer
             }
         }
 
-        internal void LoadContent(ContentManager Content)
-        {
-            texture = Content.Load<Texture2D>("Platform");
-        }
-        public Collider(Vector2 position, Vector2 dimensions, ColliderType colliderType)
+        public Collider(Vector2 position, Vector2 dimensions, ColliderType colliderType, Texture2D texture)
         {
             this.position = position;
             this.dimensions = dimensions;
-            this.type = colliderType;              
+            this.type = colliderType;
+            this.texture = texture;
         }
 
-
-        //internal void Draw(SpriteBatch spriteBatch)
-        //{
-        //    spriteBatch.Draw(texture, BoundingBox, new Rectangle(0, 0, 1, 1), Color.White);
-        //}
+        internal void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, BoundingBox, new Rectangle(0, 0, 1, 1), Color.White);
+        }
 
         //public override void Update(GameTime gameTime)
         //{
@@ -62,17 +58,21 @@ namespace DMIT1514_Lab06_Platformer
                 switch (type)
                 {
                     case ColliderType.Left:
-                        //if the player is moving rightwards                        
-                        actor.sideColliding = true;
-                        actor.Velocity.Y = 8;
-                        //actor.Velocity.X = 0;
+                        //if the player is moving rightwards
+                        if (actor.Velocity.X > 0)
+                        {
+                            actor.sideColliding = true;
+                            actor.Velocity.X = 0;
+                        }
                         actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Right:
                         //if the player is moving leftwards
-                        actor.sideColliding = true;
-                        actor.Velocity.Y = 8;
-                        //actor.Velocity.X = 0;
+                        if (actor.Velocity.X < 0)
+                        {
+                            actor.sideColliding = true;
+                            actor.Velocity.X = 0;
+                        }
                         actor.transform.MovePosition(actor.Velocity);
                         break;
                     case ColliderType.Top:

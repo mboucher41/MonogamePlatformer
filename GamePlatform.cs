@@ -18,35 +18,31 @@ namespace DMIT1514_Lab06_Platformer
         public Collider leftCollider;
         public Collider rightCollider;
 
-        protected Texture2D texture;
-        protected string textureName;
         protected Vector2 position;
         protected Vector2 dimensions;
 
-        public GamePlatform(Vector2 position, Vector2 dimensions, string textureName)
+        public GamePlatform(Vector2 position, Vector2 dimensions, Texture2D texture)
         {
             topCollider = new Collider(                                        
-                                        new Vector2(position.X + 3, position.Y),
+                                        new Vector2(position.X, position.Y-1),
                                         new Vector2(dimensions.X - 6, 1),
-                                        Collider.ColliderType.Top);
+                                        Collider.ColliderType.Top,
+                                        texture);
             rightCollider = new Collider(
-                                        new Vector2(position.X + dimensions.X - 1, position.Y + 1),
+                                        new Vector2(position.X + dimensions.X - 1, position.Y + 2),
                                         new Vector2(1, dimensions.Y - 2),
-                                        Collider.ColliderType.Right);
+                                        Collider.ColliderType.Right,
+                                        texture);
             bottomCollider = new Collider(
                                         new Vector2(position.X + 3, position.Y + dimensions.Y),
                                         new Vector2(dimensions.X - 6, 1),
-                                        Collider.ColliderType.Bottom);
+                                        Collider.ColliderType.Bottom,
+                                        texture);
             leftCollider = new Collider(
-                                        new Vector2(position.X, position.Y + 1),
+                                        new Vector2(position.X, position.Y + 2),
                                         new Vector2(1, dimensions.Y - 2),
-                                        Collider.ColliderType.Left);
-            this.textureName = textureName;
-        }
-
-        internal void LoadContent(ContentManager Content)
-        {
-            texture = Content.Load<Texture2D>(textureName);
+                                        Collider.ColliderType.Left,
+                                        texture);
         }
 
         internal void ProcessCollisions(Actor actor)
@@ -55,6 +51,14 @@ namespace DMIT1514_Lab06_Platformer
             rightCollider.ProcessCollisions(actor);
             bottomCollider.ProcessCollisions(actor);
             leftCollider.ProcessCollisions(actor);
+        }
+
+        internal void Draw(SpriteBatch spritebatch)
+        {
+            topCollider.Draw(spritebatch);
+            rightCollider.Draw(spritebatch);
+            bottomCollider.Draw(spritebatch);
+            leftCollider.Draw(spritebatch);
         }
 
         //internal void Draw(SpriteBatch spriteBatch)

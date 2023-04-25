@@ -33,7 +33,7 @@ namespace DMIT1514_Lab06_Platformer
 
         public override void Update(GameTime gameTime)
         {
-            //Velocity.Y += 0.4f;
+            Velocity.Y += 0.4f;
 
             if (sideColliding == false)
             {
@@ -59,7 +59,7 @@ namespace DMIT1514_Lab06_Platformer
             {
                 landed = false;
                 CurrentPlayerJumpState = JumpState.jumping;
-                jumpTime += 7;
+                jumpTime += 14;
             }
 
             switch (CurrentPlayerJumpState)
@@ -94,15 +94,16 @@ namespace DMIT1514_Lab06_Platformer
         }
         internal void Land(Rectangle landingRect)
         {
-            transform.SetPosition(new Vector2(transform._position.X, landingRect.Top - rectangle.Height + 1));
+            transform._position.Y = landingRect.Top - rectangle.Y + 1;
             Velocity.Y = 0;
             transform.SyncRect(rectangle);
             landed = true;
+            //CurrentPlayerJumpState = JumpState.grounded;
         }
 
         internal void StandOn(Rectangle standRect)
         {
-            Velocity.Y -= 1;
+            Velocity.Y -= 0.4f;
         }
 
         public void SetVelocity(int x, int y)
