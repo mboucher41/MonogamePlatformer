@@ -44,59 +44,57 @@ namespace DMIT1514_Lab06_Platformer
             spriteBatch.Draw(texture, BoundingBox, new Rectangle(0, 0, 1, 1), Color.White);
         }
 
-        //public override void Update(GameTime gameTime)
+        //internal bool ProcessCollisions(Actor actor)
         //{
-        //    base.Update(gameTime);
+        //    bool didCollide = false;
+        //    if (BoundingBox.Intersects(actor.rectangle))
+        //    {
+        //        didCollide = true;
+        //        switch (type)
+        //        {
+        //            case ColliderType.Top:
+        //                //if the player is landing on top
+        //                if (actor.CurrentPlayerJumpState == Actor.JumpState.falling)
+        //                {
+        //                    actor.Land(BoundingBox);
+        //                    actor.StandOn(BoundingBox);
+        //                }
+        //                break;
+        //            case ColliderType.Bottom:
+        //                //if the player hits the bottom
+        //                if (actor.Velocity.Y < 0)
+        //                {
+        //                    actor.Velocity.Y = 8;
+        //                    actor.transform.MovePosition(actor.Velocity);
+        //                }
+        //                //actor.CurrentPlayerJumpState = Actor.JumpState.falling;
+        //                //actor.transform.MovePosition(actor.Velocity);                    
+        //                break;
+        //            case ColliderType.Left:
+        //                //if the player is moving rightwards
+        //                if (actor.Velocity.X > 0)
+        //                {
+        //                    actor.sideColliding = true;
+        //                    actor.Velocity.X = 0;
+        //                }
+        //                actor.transform.MovePosition(actor.Velocity);
+        //                break;
+        //            case ColliderType.Right:
+        //                //if the player is moving leftwards
+        //                if (actor.Velocity.X < 0)
+        //                {
+        //                    actor.sideColliding = true;
+        //                    actor.Velocity.X = 0;
+        //                }
+        //                actor.transform.MovePosition(actor.Velocity);
+        //                break;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        actor.sideColliding = false;
+        //    }
+        //    return didCollide;
         //}
-
-        internal bool ProcessCollisions(Actor actor)
-        {
-            bool didCollide = false;
-            if (BoundingBox.Intersects(actor.rectangle))
-            {
-                didCollide = true;
-                switch (type)
-                {
-                    case ColliderType.Left:
-                        //if the player is moving rightwards
-                        if (actor.Velocity.X > 0)
-                        {
-                            actor.sideColliding = true;
-                            actor.Velocity.X = 0;
-                        }
-                        actor.transform.MovePosition(actor.Velocity);
-                        break;
-                    case ColliderType.Right:
-                        //if the player is moving leftwards
-                        if (actor.Velocity.X < 0)
-                        {
-                            actor.sideColliding = true;
-                            actor.Velocity.X = 0;
-                        }
-                        actor.transform.MovePosition(actor.Velocity);
-                        break;
-                    case ColliderType.Top:
-                        //if the player is landing on top
-                        actor.Land(BoundingBox);
-                        actor.StandOn(BoundingBox);
-                        break;
-                    case ColliderType.Bottom:
-                        //if the player hits the bottom
-                        //if (actor.Velocity.Y < 0)
-                        //{
-                            actor.Velocity.Y = 8;
-                            actor.transform.MovePosition(actor.Velocity);
-                        //}                        
-                        //actor.CurrentPlayerJumpState = Actor.JumpState.falling;
-                        //actor.transform.MovePosition(actor.Velocity);                    
-                        break;
-                }
-            }
-            else
-            {
-                actor.sideColliding = false;
-            }
-            return didCollide;
-        }
     }
 }

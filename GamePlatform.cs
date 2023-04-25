@@ -13,10 +13,11 @@ namespace DMIT1514_Lab06_Platformer
 {
     public class GamePlatform
     {
-        public Collider topCollider;
-        public Collider bottomCollider;
-        public Collider leftCollider;
-        public Collider rightCollider;
+        public ColliderTop topCollider;
+        public ColliderBottom bottomCollider;
+        public ColliderLeft leftCollider;
+        public ColliderRight rightCollider;
+
         public Texture2D texture;
 
         protected Vector2 position;
@@ -24,29 +25,29 @@ namespace DMIT1514_Lab06_Platformer
 
         public GamePlatform(Vector2 position, Vector2 dimensions, Texture2D texture)
         {
-            topCollider = new Collider(                                        
+            this.texture = texture;
+            this.position = position;
+            this.dimensions = dimensions;
+            topCollider = new ColliderTop(                                        
                                         new Vector2(position.X + 3, position.Y),
                                         new Vector2(dimensions.X - 6, 1),
                                         Collider.ColliderType.Top,
                                         texture);
-            rightCollider = new Collider(
+            rightCollider = new ColliderRight(
                                         new Vector2(position.X + dimensions.X - 1, position.Y + 1),
                                         new Vector2(1, dimensions.Y - 2),
                                         Collider.ColliderType.Right,
                                         texture);
-            bottomCollider = new Collider(
+            bottomCollider = new ColliderBottom(
                                         new Vector2(position.X + 3, position.Y + dimensions.Y),
                                         new Vector2(dimensions.X - 6, 1),
                                         Collider.ColliderType.Bottom,
                                         texture);
-            leftCollider = new Collider(
+            leftCollider = new ColliderLeft(
                                         new Vector2(position.X, position.Y + 1),
                                         new Vector2(1, dimensions.Y - 2),
                                         Collider.ColliderType.Left,
                                         texture);
-            this.texture = texture;
-            this.position = position;
-            this.dimensions = dimensions;
         }
 
         internal void ProcessCollisions(Actor actor)

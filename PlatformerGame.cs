@@ -11,15 +11,14 @@ namespace PlatformerGame
     {      
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private const int GameScale = 4;
 
         Texture2D playerTexture;
         Texture2D platformTexture;
         Texture2D groundTexture;
         Texture2D coinTexture;
         Actor player;       
-        GamePlatform platform;
-        Collider ground;
+        GamePlatform platform1, platform2;
+        GamePlatform ground;
 
         Coin coin1, coin2, coin3;
 
@@ -44,23 +43,26 @@ namespace PlatformerGame
             // TODO: Add your initialization logic here
             base.Initialize();
             Window.Title = "Platformer Game";
-            _graphics.PreferredBackBufferWidth = 360 * GameScale;
-            _graphics.PreferredBackBufferHeight = 240 * GameScale;
+            _graphics.PreferredBackBufferWidth = 1000;
+            _graphics.PreferredBackBufferHeight = 700;
             _graphics.ApplyChanges();
-            playerTransform = new Transform(new Vector2(360 * GameScale, 150 * GameScale), 0, 1f);//DOES NOT SEEM TO CHANGE     
-            platformTransform = new Transform(new Vector2(150 * GameScale, 180 * GameScale), 0, 1f);
-            groundTransform = new Transform(new Vector2(0, 240 * GameScale), 0, 1f);//COLLISION DOES NOT WORK PROPERLY
+            playerTransform = new Transform(new Vector2(360, 150), 0, 1);//DOES NOT SEEM TO CHANGE     
+            platformTransform = new Transform(new Vector2(150, 500), 0, 1);
+            groundTransform = new Transform(new Vector2(0, Window.ClientBounds.Height), 0, 1);//COLLISION DOES NOT WORK PROPERLY
 
-            coinTransform1 = new Transform(new Vector2(100 * GameScale, 100 * GameScale), 0, 1f);
+            coinTransform1 = new Transform(new Vector2(100, 100), 0, 1);
 
             player = new Actor(this, playerTransform, playerTexture);
-            platform = new GamePlatform(new Vector2(platformTransform._position.X, platformTransform._position.Y), new Vector2(100,50), platformTexture);
-            ground = new Collider(new Vector2(groundTransform._position.X, groundTransform._position.Y - 100), new Vector2(3000, 100), Collider.ColliderType.Top, platformTexture);
+            platform1 = new GamePlatform(new Vector2(platformTransform._position.X, platformTransform._position.Y), new Vector2(100,50), platformTexture);
+            platform2 = new GamePlatform(new Vector2(Window.ClientBounds.Width / 2 , Window.ClientBounds.Height - 50), new Vector2(100, 50), platformTexture);
+            ground = new GamePlatform(new Vector2(groundTransform._position.X, groundTransform._position.Y), new Vector2(3000, 100), platformTexture);
             coin1 = new Coin(this, coinTransform1, coinTexture);
 
             coinList.Add(coin1);
-            platformList.Add(platform);
-            colliderList.Add(ground);
+            platformList.Add(platform1);
+            platformList.Add(platform2);
+            platformList.Add(ground);
+            //colliderList.Add(ground);
         }
 
         protected override void LoadContent()
@@ -85,10 +87,18 @@ namespace PlatformerGame
 
             foreach (GamePlatform p in platformList)
             {
-                p.topCollider.ProcessCollisions(player);
-                p.bottomCollider.ProcessCollisions(player);
                 p.leftCollider.ProcessCollisions(player);
                 p.rightCollider.ProcessCollisions(player);
+                p.topCollider.ProcessCollisions(player);
+                p.bottomCollider.ProcessCollisions(player);
+            }
+
+            foreach (GamePlatform p in platformList)
+            {
+                p.leftCollider.ProcessCollisions(player);
+                p.rightCollider.ProcessCollisions(player);
+                p.topCollider.ProcessCollisions(player);
+                p.bottomCollider.ProcessCollisions(player);
             }
 
             foreach (Coin c in coinList)

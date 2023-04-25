@@ -33,10 +33,11 @@ namespace DMIT1514_Lab06_Platformer
 
         public override void Update(GameTime gameTime)
         {
+            rectangle.Location = transform._position.ToPoint();
             Velocity.Y += 0.4f;
 
-            if (sideColliding == false)
-            {
+            //if (sideColliding == false)
+            //{
                 if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
                 {
                     Velocity.X = 6;
@@ -49,11 +50,11 @@ namespace DMIT1514_Lab06_Platformer
                 {
                     Velocity.X = 0;
                 }
-            }
-            else
-            {
-                Velocity.X = 0;
-            }
+            //}
+            //else
+            //{
+            //    Velocity.X = 0;
+            //}
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && landed == true)
             {
@@ -104,6 +105,13 @@ namespace DMIT1514_Lab06_Platformer
         internal void StandOn(Rectangle standRect)
         {
             Velocity.Y -= 0.4f;
+        }
+        public override void Draw(GameTime gameTime)
+        {
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Draw(texture, transform._position, texture.Bounds, Color.White, transform._rotation, texture.Bounds.Location.ToVector2(), transform._scale, SpriteEffects.None, 0);
+
+            spriteBatch.End();
         }
 
         public void SetVelocity(int x, int y)

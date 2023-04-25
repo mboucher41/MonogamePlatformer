@@ -14,9 +14,6 @@ namespace PlatformerGame
         // Each child should overrode/make a new spritebatch.
         // Objects of the same class can share the spritebatch.
         public static SpriteBatch spriteBatch;
-        protected void Initialze()
-        {            
-        }
 
         public GameObject(Game game, Transform transform, Texture2D texture2D) : base(game)
         {
@@ -25,12 +22,13 @@ namespace PlatformerGame
                 spriteBatch = spriteBatch = new SpriteBatch(GraphicsDevice);
             }
             // Add more to the constructor.
-            game.Components.Add(this); // This allows the game to call Update and Draw automatically.
+             // This allows the game to call Update and Draw automatically.
             this.transform = transform;
             this.texture = texture2D;
 
             rectangle = texture.Bounds;
-            this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));
+            //this.rectangle = new Rectangle(rectangle.Location, new Point(rectangle.Width * (int)transform._scale, rectangle.Height * (int)transform._scale));
+            game.Components.Add(this);
         }
 
         public void Start(Vector2 startPosition)
