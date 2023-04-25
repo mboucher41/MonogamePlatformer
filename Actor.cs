@@ -9,7 +9,8 @@ namespace DMIT1514_Lab06_Platformer
     {
         internal Vector2 Velocity;
         bool landed;
-        public bool sideColliding;
+        public bool leftCollide;
+        public bool rightCollide;
         public enum JumpState
         {
             grounded,
@@ -31,18 +32,32 @@ namespace DMIT1514_Lab06_Platformer
             Velocity.Y += 1;
         }
 
-        public override void Update(GameTime gameTime)
+        public new void Update(GameTime gameTime)
         {
+            //leftCollide = false;
+            //rightCollide = false;
             rectangle.Location = transform._position.ToPoint();
             Velocity.Y += 0.4f;
 
-            //if (sideColliding == false)
-            //{
-                if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
+            {
+                if (leftCollide == false)
                 {
                     Velocity.X = 6;
                 }
-                else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                else
+                {
+                    Velocity.X = 0;
+                }
+
+                if (leftCollide == true)
+                {
+                    Velocity.X = 0;
+                }
+            }
+            else if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            {
+                if (rightCollide == false)
                 {
                     Velocity.X = -6;
                 }
@@ -50,11 +65,18 @@ namespace DMIT1514_Lab06_Platformer
                 {
                     Velocity.X = 0;
                 }
-            //}
-            //else
-            //{
-            //    Velocity.X = 0;
-            //}
+
+                if (rightCollide == true)
+                {
+                    Velocity.X = 0;
+                }
+            }
+            else
+            {
+                Velocity.X = 0;
+            }
+
+
 
             if (Keyboard.GetState().IsKeyDown(Keys.Space) && landed == true)
             {
@@ -84,11 +106,11 @@ namespace DMIT1514_Lab06_Platformer
                     if (transform._position.Y > Game.Window.ClientBounds.Height - 60)//Hardcoded ground limit
                     {
                         transform._position.Y = Game.Window.ClientBounds.Height - 60;
-                        CurrentPlayerJumpState = JumpState.grounded;                       
+                        CurrentPlayerJumpState = JumpState.grounded;
                     }
                     break;
             }
-          
+
             rectangle.Offset(Velocity);
             transform.SyncRect(rectangle);
             base.Update(gameTime);

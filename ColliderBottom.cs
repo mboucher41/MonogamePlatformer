@@ -15,6 +15,7 @@ namespace DMIT1514_Lab06_Platformer
         }
         internal bool ProcessCollisions(Actor actor)
         {
+
             bool didCollide = false;
             if (BoundingBox.Intersects(actor.rectangle))
             {

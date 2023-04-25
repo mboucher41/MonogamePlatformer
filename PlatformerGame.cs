@@ -84,6 +84,11 @@ namespace PlatformerGame
             //{
             //    c.ProcessCollisions(player);
             //}        
+            player.leftCollide = false;
+            player.rightCollide = false;
+
+            player.Update(gameTime);
+
 
             foreach (GamePlatform p in platformList)
             {
@@ -110,6 +115,7 @@ namespace PlatformerGame
             {
                 //WIN
             }
+
             base.Update(gameTime);
         }
 

@@ -19,11 +19,15 @@ namespace DMIT1514_Lab06_Platformer
             if (BoundingBox.Intersects(actor.rectangle))
             {
                 didCollide = true;
-                if (actor.Velocity.X > 0)
-                {
-                    //actor.sideColliding = true;
-                    actor.Velocity = Vector2.Zero;
-                }
+
+                //actor.sideColliding = true;
+                actor.Velocity = Vector2.Zero;
+                actor.leftCollide = true;
+
+            }
+            else
+            {
+                actor.leftCollide = false;
             }
             return didCollide;
         }
