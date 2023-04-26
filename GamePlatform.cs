@@ -61,10 +61,10 @@ namespace DMIT1514_Lab06_Platformer
         internal void Draw(SpriteBatch spritebatch)
         {
             spritebatch.Draw(texture, position, Color.White);
-            topCollider.Draw(spritebatch);
-            rightCollider.Draw(spritebatch);
-            bottomCollider.Draw(spritebatch);
-            leftCollider.Draw(spritebatch);         
+            //topCollider.Draw(spritebatch);
+            //rightCollider.Draw(spritebatch);
+            //bottomCollider.Draw(spritebatch);
+            //leftCollider.Draw(spritebatch);         
         }
     }
 }

@@ -39,15 +39,14 @@ namespace DMIT1514_Lab06_Platformer
             rectangle.Location = transform._position.ToPoint();
             Velocity.Y += 0.4f;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))//Maybe add hardcoded screen side limits?
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 if (leftCollide == false)
                 {
-                    Velocity.X = 6;
-                }
-                else
-                {
-                    Velocity.X = 0;
+                    if (transform._position.X < Game.Window.ClientBounds.Width)//Attempted right side limit
+                    {
+                        Velocity.X = 6;
+                    }
                 }
 
                 if (leftCollide == true)
@@ -59,11 +58,10 @@ namespace DMIT1514_Lab06_Platformer
             {
                 if (rightCollide == false)
                 {
-                    Velocity.X = -6;
-                }
-                else
-                {
-                    Velocity.X = 0;
+                    if (transform._position.X > 0)//Attempted left side limit
+                    {
+                        Velocity.X = -6;
+                    }
                 }
 
                 if (rightCollide == true)

@@ -41,7 +41,7 @@ namespace DMIT1514_Lab06_Platformer
                 {
                     coinCount += 1;
                     active = false;
-                    if (coinCount == 3)
+                    if (coinCount == 6)
                     {
                         gameWon = true;
                     }
